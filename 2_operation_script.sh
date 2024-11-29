@@ -43,7 +43,16 @@ fi
 # Perform calculation
 result=${nums[0]}
 for ((i=1; i<${#nums[@]}; i++)); do
-    result=$((result $op ${nums[i]}))
+    case "$op" in
+        "+") result=$((result + nums[i])) ;;
+        "-") result=$((result - nums[i])) ;;
+        "*") result=$((result * nums[i])) ;;
+        "%") result=$((result % nums[i])) ;;
+        *) 
+            echo "Invalid operation: $op"
+            exit 1
+            ;;
+    esac
 done
 
 # Output the result
@@ -54,6 +63,5 @@ if [[ $debug -eq 1 ]]; then
     echo "User: $(whoami)"
     echo "Script: $0"
     echo "Operation: $op"
-    echo "Numbers: ${nums[@]}"
+    echo "Numbers: ${nums[*]}"
 fi
-

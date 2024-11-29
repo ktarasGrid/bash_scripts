@@ -1,11 +1,6 @@
 #!/bin/bash
 
 # Initialize variables
-swap_case=false
-substitute=false
-reverse_lines=false
-to_lower=false
-to_upper=false
 input_file=""
 output_file=""
 a_word=""
@@ -18,11 +13,9 @@ i=0
 while [ $i -lt $# ]; do
   case "${args[$i]}" in
     -v)
-      swap_case=true
       transformations+=("swap_case")
       ;;
     -s)
-      substitute=true
       ((i++))
       if [ $i -ge $# ]; then
         echo "Error: Missing arguments for -s option."
@@ -38,15 +31,12 @@ while [ $i -lt $# ]; do
       transformations+=("substitute")
       ;;
     -r)
-      reverse_lines=true
       transformations+=("reverse_lines")
       ;;
     -l)
-      to_lower=true
       transformations+=("to_lower")
       ;;
     -u)
-      to_upper=true
       transformations+=("to_upper")
       ;;
     -i)
@@ -94,14 +84,14 @@ content=$(cat "$input_file")
 
 # Define transformation functions
 swap_case() {
-  content=$(echo "$content" | tr '[:lower:][:upper:]' '[:upper:][:lower:]')
+  content="${content//${escaped_a_word}/${escaped_b_word}}"
 }
 
 substitute() {
   # Escape special characters in a_word and b_word
-  escaped_a_word=$(printf '%s' "$a_word" | sed 's/[.[\*^$(){}?+|/]/\\&/g')
-  escaped_b_word=$(printf '%s' "$b_word" | sed 's/[&/\]/\\&/g')
-  content=$(echo "$content" | sed "s/${escaped_a_word}/${escaped_b_word}/g")
+  escaped_a_word=$(printf '%s' "$a_word" | sed "s/[.[\*^$(){}?+|/]/\\&/g")
+  escaped_b_word=$(printf '%s' "$b_word" | sed "s/[&/\]/\\&/g")
+  content="${content//${escaped_a_word}/${escaped_b_word}}"
 }
 
 reverse_lines() {
@@ -123,4 +113,3 @@ done
 
 # Write the content to the output file
 echo "$content" > "$output_file"
-

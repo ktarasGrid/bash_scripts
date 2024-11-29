@@ -1,7 +1,5 @@
 #!/bin/bash
 
-#!/bin/bash
-
 fibonacci() {
 	if [ "$1" -eq 0 ]; then
 		echo 0
