@@ -41,7 +41,7 @@ if [ -z "$page_size" ]; then
 fi
 
 # Calculate total free memory in bytes
-mem_free_bytes=$(( ($mem_free_pages + $mem_inactive_pages + $mem_speculative_pages) * $page_size ))
+mem_free_bytes=$(( (mem_free_pages + mem_inactive_pages + mem_speculative_pages) * page_size ))
 # Convert free memory to GB
 mem_free_gb=$(echo "scale=2; $mem_free_bytes/1024/1024/1024" | bc)
 
